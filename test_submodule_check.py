@@ -1,13 +1,5 @@
 import os
 import sys
-import shutil
-
-# Try to import ComfyUI-specific modules, but don't fail if they're not available
-try:
-    import folder_paths
-    is_comfyui_environment = True
-except ImportError:
-    is_comfyui_environment = False
 
 # Check if the submodule exists
 SUBMODULE_PATH = os.path.join(os.path.dirname(__file__), "stable_diffusion_prompt_reader")
@@ -53,25 +45,6 @@ https://github.com/receyuki/comfyui-prompt-reader-node#installation
 """
     
     print(error_message)
-    
-    # We'll still try to define the required variables to prevent further errors
-    NODE_CLASS_MAPPINGS = {}
-    NODE_DISPLAY_NAME_MAPPINGS = {}
-    
-    # Exit early - don't try to import from the missing submodule
-    __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
+    print("Submodule check: Missing")
 else:
-    # Normal initialization when submodule exists
-    from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
-    
-    __all__ = ["NODE_CLASS_MAPPINGS", "NODE_DISPLAY_NAME_MAPPINGS"]
-    
-    WEB_DIRECTORY = "./js"
-    
-    # Only run ComfyUI-specific code if we're in the ComfyUI environment
-    if is_comfyui_environment:
-        # remove old directory
-        comfy_path = os.path.dirname(folder_paths.__file__)
-        old_dir = os.path.join(comfy_path, "web", "extensions", "SDPromptReader")
-        if os.path.exists(old_dir):
-            shutil.rmtree(old_dir)
+    print("Submodule check: Present")
